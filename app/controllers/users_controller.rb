@@ -2,8 +2,12 @@ class UsersController < ApplicationController
 
   # GET: /users
   get "/users" do
-    @users = User.all
-    erb :"/users/index.html"
+    if is_logged_in?
+      @users = User.all
+      erb :"/users/index.html"
+    else
+      redirect to '/welcome'
+    end
   end
 
   # GET: /users/new
@@ -97,6 +101,13 @@ class UsersController < ApplicationController
   # DELETE: /users/5/delete
   delete "/users/:id" do
     find_and_set_user
+    # removes pets before deleting user
+    @pet_remover = Pet.all
+    @pet_remover.each do |pet|
+      if pet.owner_id == @user.id
+        pet.destroy
+      end
+    end
     @user.destroy
     session.clear
     redirect to "/welcome"

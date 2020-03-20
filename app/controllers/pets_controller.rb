@@ -6,7 +6,8 @@ class PetsController < ApplicationController
     @pets = Pet.all
     erb :"/pets/index.html"
     else
-      redirect :"/welcome"
+      redirect to "/welcome"
+    end
   end
 
   # GET: /pets/new

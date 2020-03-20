@@ -17,8 +17,6 @@
   <% if pet.id ==  @user.id %>
     <u><strong><l1><a href="/pets/<%= pet.id %>"><%= pet.name %></a></l1></strong></u>
     <br>
-  <% else %>
-    <p>You have no pets registered to this account.</p>
   <% end %>
 <% end %>
 </<ul>

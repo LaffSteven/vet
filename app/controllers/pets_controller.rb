@@ -24,7 +24,7 @@ class PetsController < ApplicationController
     else
       params[:owner_id] = current_user.id
       pet = Pet.create(params)
-      redirect "/pets/#{pet.id}"
+      redirect "/users/#{current_user.id}"
     end
   end
 
@@ -53,8 +53,10 @@ class PetsController < ApplicationController
     find_and_set_pet
     if @pet.owner_id == current_user.id
       @pet.destroy
+      redirect to "/users/#{current_user.id}"
+    else
+      redirect to "/pets"
     end
-    redirect to "/users/#{current_user.id}"
   end
 
   private

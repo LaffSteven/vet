@@ -13,7 +13,7 @@
 </form>
 <br><br>
 
-<form action="/pets/<%= @pet.id %>" method="delete">
+<form action="/pets/<%= @pet.id %>" method="post">
   <h3>Remove this pet from your list?</h3>
     <input id="hidden" type="hidden" name="_method" value="delete">
     <input style="background-color:red" type="submit" value="Delete Pet's Info">

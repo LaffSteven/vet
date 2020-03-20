@@ -24,7 +24,6 @@ class PetsController < ApplicationController
     else
       params[:owner_id] = current_user.id
       pet = Pet.create(params)
-      binding.pry
       redirect "/pets/#{pet.id}"
     end
   end

@@ -15,14 +15,12 @@
 
 <h3><u>My Pets</u></h3>
 <p>Click you pet's name to view their info.</p>
-<ul>
 <% @pets.each do |pet| %>
-  <% if pet.id ==  @user.id %>
-    <u><strong><l1><a href="/pets/<%= pet.id %>"><%= pet.name %></a></l1></strong></u>
+  <% if pet.owner_id == current_user.id %>
+    <u><strong><a href="/pets/<%= pet.id %>"><%= pet.name %></a></strong></u>
     <br>
   <% end %>
 <% end %>
-</<ul>
   <br>
   <br>
 <button style="width:150px;" onclick="window.location.href = '/pets/new';">Register New Pet</button>

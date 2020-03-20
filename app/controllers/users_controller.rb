@@ -41,7 +41,7 @@ class UsersController < ApplicationController
   # GET: /users/5
   get "/users/:id" do
     find_and_set_user
-    if @user.id == current_user.id
+    if is_logged_in?
       @pets = Pet.all
       erb :"/users/show.html"
     else

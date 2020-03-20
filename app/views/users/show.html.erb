@@ -1,10 +1,13 @@
 <h2>Hello, <%= @user.name %>, welcome to your profile.</h2><br>
 
-<button style="width:150px;" onclick="window.location.href = '/users/<%= current_user.id %>/edit';">Edit Account Info</button>
+
 <br>
 
 <h3>Username: <%= @user.username %></h3>
 <h3>Email: <%= @user.email %></h3>
+
+<br>
+<button style="width:150px;" onclick="window.location.href = '/users/<%= current_user.id %>/edit';">Edit Account Info</button>
 
 <br>
 <br>

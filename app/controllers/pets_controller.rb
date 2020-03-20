@@ -2,8 +2,11 @@ class PetsController < ApplicationController
 
   # GET: /pets
   get "/pets" do
+    if is_logged_in?
     @pets = Pet.all
     erb :"/pets/index.html"
+    else
+      redirect :"/welcome"
   end
 
   # GET: /pets/new

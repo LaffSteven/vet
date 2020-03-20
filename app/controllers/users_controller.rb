@@ -95,7 +95,7 @@ class UsersController < ApplicationController
   end
 
   # DELETE: /users/5/delete
-  delete "/users/:id/delete" do
+  delete "/users/:id" do
     find_and_set_user
     @user.destroy
     session.clear

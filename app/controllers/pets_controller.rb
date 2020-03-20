@@ -49,7 +49,7 @@ class PetsController < ApplicationController
   end
 
   # DELETE: /pets/5/delete
-  delete "/pets/:id/delete" do
+  delete "/pets/:id" do
     find_and_set_pet
     if @pet.owner_id == current_user.id
       @pet.destroy

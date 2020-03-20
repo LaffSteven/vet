@@ -1,0 +1,12 @@
+<h2><%= @pet.name %>'s Information<br></h2>
+
+<ul>
+  <li>Species: <%= @pet.species %></li>
+  <li>Breed: <%= @pet.breed %></li>
+  <li>Age: <%= @pet.age %></li>
+</ul>
+
+<br>
+<br>
+
+<button style="width:150px;" onclick="window.location.href = '/pets/<%= @pet.id %>/edit';">Edit Pet Info</button>

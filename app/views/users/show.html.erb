@@ -1,0 +1,27 @@
+<h2>Hello, <%= @user.name %>, welcome to your profile.</h2><br>
+
+<button style="width:150px;" onclick="window.location.href = '/users/<%= current_user.id %>/edit';">Edit Account Info</button>
+<br>
+
+<h3>Username: <%= @user.username %></h3>
+<h3>Email: <%= @user.email %></h3>
+
+<br>
+<br>
+<br>
+
+<h3><u>My Pets</u></h3>
+<p>Click you pet's name to view their info.</p>
+<ul>
+<% @pets.each do |pet| %>
+  <% if pet.id ==  @user.id %>
+    <u><strong><l1><a href="/pets/<%= pet.id %>"><%= pet.name %></a></l1></strong></u>
+    <br>
+  <% else %>
+    <p>You have no pets registered to this account.</p>
+  <% end %>
+<% end %>
+</<ul>
+  <br>
+  <br>
+<button style="width:150px;" onclick="window.location.href = '/pets/new';">Register New Pet</button>

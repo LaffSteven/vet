@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+
+    <title>VetCentral</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="/stylesheets/main.css" />
+  </head>
+
+  <body>
+    <div class="wrapper">
+
+        <%= yield %>
+
+
+      <div class="sidebar">
+      <% if current_user %>
+        <ul>
+          <li><button style="width:125px;" onclick="window.location.href = '/welcome';">Home</button><br></li>
+          <li><button style="width:125px;" onclick="window.location.href = '/users/<%= current_user.id %>';">My Account</button><br></li>
+          <li><button style="width:125px;" onclick="window.location.href = '/logout';">Log Out</button><br></li>
+        </ul>
+      <% else %>
+        <ul>
+          <li>
+            <form action="/login" method="post">
+              <label for="Username">Username: </label>
+              <input type="text" name="username" placeholder="username">
+              <label for="password">Password: </label>
+              <input type="password" name="password" placeholder="password">
+              <input type="submit" value="Login">
+            </form>
+          </li>
+          <li><h3>Don't have an account?</h3></li>
+          <button onclick="window.location.href = '/users/new';">Create Account Here</button>
+        </ul>
+      <% end %>
+      </div>
+      <footer class="branding">
+        <small>&copy; 2020 <strong>VetCentral</strong></small>
+      </footer>
+    </div>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <!--[if lt IE 7]>
+      <script src="//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.2/CFInstall.min.js"></script>
+      <script>window.attachEvent("onload",function(){CFInstall.check({mode:"overlay"})})</script>
+    <![endif]-->
+  </body>
+</html>

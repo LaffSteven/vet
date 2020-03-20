@@ -52,8 +52,10 @@ class PetsController < ApplicationController
   # DELETE: /pets/5/delete
   delete "/pets/:id/delete" do
     find_and_set_pet
-    #@pet.destroy
-    redirect "/users/#{@user.id}"
+    if @pet.owner_id == current_user.id
+      @pet.destroy
+    end
+    redirect to "/users/#{current_user.id}"
   end
 
   private

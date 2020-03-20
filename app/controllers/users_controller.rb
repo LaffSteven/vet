@@ -25,8 +25,11 @@ class UsersController < ApplicationController
     # Check the list of existing usernames, only allow unique usernames
     elsif user = User.find_by(:username => params[:username])
       redirect to '/users/new'
-    # If username is unique and password is valid, post new user
-    # Update the session to the new user's session and redirect to profile page
+    # Check for unique email
+    elsif user = User.find_by(:email => params[:email])
+      redirect to '/users/new'
+      # If username is unique and password is valid, post new user
+      # Update the session to the new user's session and redirect to profile page
     else
       user = User.create(params)
       #binding.pry
@@ -38,8 +41,12 @@ class UsersController < ApplicationController
   # GET: /users/5
   get "/users/:id" do
     find_and_set_user
-    @pets = Pet.all
-    erb :"/users/show.html"
+    if @user.id == current_user.id
+      @pets = Pet.all
+      erb :"/users/show.html"
+    else
+      redirect to "/welcome"
+    end
   end
 
   get "/login" do
@@ -73,7 +80,7 @@ class UsersController < ApplicationController
       find_and_set_user
       erb :"/users/edit.html"
     else
-      redirect to "/"
+      redirect to "/welcome"
     end
   end
 

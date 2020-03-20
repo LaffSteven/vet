@@ -99,7 +99,6 @@ class UsersController < ApplicationController
     find_and_set_user
     @user.destroy
     session.clear
-    binding.pry
     redirect to "/welcome"
   end
 

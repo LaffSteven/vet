@@ -13,7 +13,7 @@
 </form>
 <br><br>
 
-<form action="/users/<%= @user.id %>" method="delete">
+<form action="/users/<%= @user.id %>" method="post">
   <h3>You can delete your account here:</h3>
     <input id="hidden" type="hidden" name="_method" value="delete">
     <input style="background-color:red" type="submit" value="Delete Account">

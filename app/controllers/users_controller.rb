@@ -11,8 +11,13 @@ class UsersController < ApplicationController
 
   post "/users" do
     find_and_set_user
-    binding.pry
-    if @user
+    if params[:username].empty? || params[:password].empty?
+      redirect to "/singup"
+    elsif user = User.find_by(:username => params[:username])
+      redirect to "/signup"
+    elsif user = User.find_by(:email => params[:email])
+      redirect to "/signup"
+    else @user
       session[:user_id] = @user.id
       redirect "/users/#{@user.id}"
     end

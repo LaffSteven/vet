@@ -1,14 +1,15 @@
 <h1>Edit <%= @pet.name %>'s info'</h1>
 
-<form action="/pets" method="post">
+<form action="/pets/<%= @pet.id %>" method="POST">
+  <input id="hidden" type="hidden" name="_method" value="patch">
   <label for="name">Name:</label><br>
-    <input type="text" name="name" placeholder="<%= @pet.name %>"><br>
+    <input type="text" name="name" value="<%= @pet.name %>"><br>
   <label for="species">Species: </label><br>
-    <input type="text" name="species" placeholder="<%= @pet.species %>"><br>
+    <input type="text" name="species" value="<%= @pet.species %>"><br>
   <label for="breed">Breed: </label><br>
-    <input type="text" name="breed" placeholder="<%= @pet.breed %>"><br>
+    <input type="text" name="breed" value="<%= @pet.breed %>"><br>
   <label for="age">Age:</label><br>
-    <input type="integer" name="age" placeholder="<%= @pet.age %>">
+    <input type="integer" name="age" value="<%= @pet.age %>">
   <input type="submit" value="Submit Changes">
 </form>
 <br><br>

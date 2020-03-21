@@ -1,8 +1,13 @@
-<h1>VetCentral Users</h1>
+<h1>VetCentral Users Index</h1>
 
   <ul>
   <% @users.each do |user| %>
-    <l1><%= user.username %></l1>
-    <br>
+    <% if @user == current_user%>
+      <a href="/users/<%= @user.id %>"><%= @user.username %></a>
+      <br>
+    <% else %>
+      <l1><%= user.username %></l1>
+      <br>
+    <% end %>
   <% end %>
   </<ul>

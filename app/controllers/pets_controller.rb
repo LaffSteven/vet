@@ -2,17 +2,23 @@ class PetsController < ApplicationController
 
   # GET: /pets
   get "/pets" do
+    # You can only see the index page if you are logged in
     if is_logged_in?
     @pets = Pet.all
     erb :"/pets/index.html"
     else
+      # send you back to the welcome screen if you are not logged in
       redirect to "/welcome"
     end
   end
 
   # GET: /pets/new
   get "/pets/new" do
-    erb :"/pets/new.html"
+    if is_logged_in?
+      erb :"/pets/new.html"
+    else
+      redirect to "/welcome"
+    end
   end
 
   # POST: /pets
@@ -34,10 +40,12 @@ class PetsController < ApplicationController
 
   # GET: /pets/5
   get "/pets/:id" do
-    if find_and_set_pet
-      erb :"/pets/show.html"
-    else
-      redirect to "/"
+    if find_and_set_pet && is_logged_in?
+      if @pet.owner_id == current_user.id
+        erb :"/pets/show.html"
+      else
+        redirect to "/pets"
+      end
     end
   end
 
@@ -49,7 +57,13 @@ class PetsController < ApplicationController
 
   # PATCH: /pets/5
   patch "/pets/:id" do
-    redirect "/pets/:id"
+    find_and_set_pet
+    if is_logged_in? && @pet.owner_id == current_user.id
+      @pet.update(:name => params[:name], :species => params[:species], :breed => params[:breed], :age => params[:age])
+      redirect "/pets/#{@pet.id}"
+    else
+      redirect to "/users/#{current_user.id}"
+    end
   end
 
   # DELETE: /pets/5/delete

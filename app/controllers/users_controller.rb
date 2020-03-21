@@ -1,6 +1,5 @@
 class UsersController < ApplicationController
 
-  # GET: /users
   get "/users" do
     if is_logged_in?
       @users = User.all
@@ -10,39 +9,45 @@ class UsersController < ApplicationController
     end
   end
 
-  # GET: /users/new
-  get "/users/new" do
-    # If there is an exisintg user session, warn current user they must log out first
-    if is_logged_in?
-      redirect to "/users/#{current_user.id}"
-    # if no user is logged in, proceed to the new user form
-    else
-      erb :"/users/new.html"
+  post "/users" do
+    find_and_set_user
+    @user.save
+    if @user
+      session[:user_id] = @user.id
+      redirect "/users/#{@user.id}"
     end
   end
 
-  # POST: /users
-  post "/users" do
-    # Make sure that both username and password are not empty
+  patch "/users/:id" do
+    find_and_set_user
+    if is_logged_in? && @user.id == current_user.id
+      @user.update(:name => params[:name], :username => params[:username], :email => params[:email], :password => params[:password])
+      redirect "/users/#{@user.id}"
+    else
+      redirect to "/users/#{current_user.id}"
+    end
+  end
+
+  get "/signup" do
+      if is_logged_in?
+        redirect to "/users/#{current_user.id}"
+      else
+        erb :"/users/new.html"
+      end
+  end
+
+  post "/signup" do
     if params[:username].empty? || params[:password].empty?
-      redirect to '/users/new'
-    # Check the list of existing usernames, only allow unique usernames
+      redirect to '/welcome'
     elsif user = User.find_by(:username => params[:username])
-      redirect to '/users/new'
-    # Check for unique email
-    elsif user = User.find_by(:email => params[:email])
-      redirect to '/users/new'
-      # If username is unique and password is valid, post new user
-      # Update the session to the new user's session and redirect to profile page
+      redirect to '/welcome'
     else
       user = User.create(params)
-      #binding.pry
       session[:user_id] = user.id
       redirect to "/users/#{user.id}"
     end
   end
 
-  # GET: /users/5
   get "/users/:id" do
     find_and_set_user
     if is_logged_in?
@@ -50,6 +55,26 @@ class UsersController < ApplicationController
       erb :"/users/show.html"
     else
       redirect to "/welcome"
+    end
+  end
+
+  get "/users/:id/edit" do
+    if is_logged_in?
+      find_and_set_user
+      erb :"/users/edit.html"
+    else
+      redirect to "/welcome"
+    end
+  end
+
+  patch "/users/:id" do
+    find_and_set_user
+    if @user == current_user
+      @user.update(:name => params[:name], :username => params[:username], :email => params[:email])
+      #binding.pry
+      redirect to "/users/#{@user.id}"
+    else
+      redirect to "/users/#{@user.id}/edit"
     end
   end
 
@@ -73,37 +98,14 @@ class UsersController < ApplicationController
   get "/logout" do
     if session[:user_id] != nil
       session.clear
-      redirect to "/"
-    end
-  end
-
-
-  # GET: /users/5/edit
-  get "/users/:id/edit" do
-    if is_logged_in?
-      find_and_set_user
-      erb :"/users/edit.html"
-    else
       redirect to "/welcome"
     end
   end
 
-  # PATCH: /users/5
-  patch "/users/:id" do
-    find_and_set_user
-      if @user.authenticate(params[:password]) && !params[:username].empty?
-        @user.update(:username => params[:username], :password => params[:password])
-        redirect to "/users/#{@user.id}"
-      end
-        redirect to "/users/#{@user.id}/edit"
-  end
-
-  # DELETE: /users/5/delete
   delete "/users/:id" do
     find_and_set_user
-    # removes pets before deleting user
-    @pet_remover = Pet.all
-    @pet_remover.each do |pet|
+    @pets_to_delete = Pet.all
+    @pets_to_delete.each do |pet|
       if pet.owner_id == @user.id
         pet.destroy
       end

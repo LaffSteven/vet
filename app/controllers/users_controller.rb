@@ -11,7 +11,7 @@ class UsersController < ApplicationController
 
   post "/users" do
     find_and_set_user
-    @user.save
+    binding.pry
     if @user
       session[:user_id] = @user.id
       redirect "/users/#{@user.id}"

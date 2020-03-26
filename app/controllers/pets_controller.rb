@@ -32,7 +32,7 @@ class PetsController < ApplicationController
       redirect to "pets/new"
       # else creates the new pet
     else
-      params[:owner_id] = current_user.id
+      params[:user_id] = current_user.id
       pet = Pet.create(params)
       redirect "/users/#{current_user.id}"
     end
@@ -41,7 +41,7 @@ class PetsController < ApplicationController
   # GET: /pets/5
   get "/pets/:id" do
     if find_and_set_pet && is_logged_in?
-      if @pet.owner_id == current_user.id
+      if @pet.user_id == current_user.id
         erb :"/pets/show.html"
       else
         redirect to "/pets"
@@ -51,14 +51,19 @@ class PetsController < ApplicationController
 
   # GET: /pets/5/edit
   get "/pets/:id/edit" do
-    find_and_set_pet
-    erb :"pets/edit.html"
+    if find_and_set_pet && is_logged_in?
+      if @pet.user_id == current_user.id
+        erb :"pets/edit.html"
+      else
+        redirect to "/pets"
+      end
+    end
   end
 
   # PATCH: /pets/5
   patch "/pets/:id" do
     find_and_set_pet
-    if is_logged_in? && @pet.owner_id == current_user.id
+    if is_logged_in? && @pet.user_id == current_user.id
       @pet.update(:name => params[:name], :species => params[:species], :breed => params[:breed], :age => params[:age])
       redirect "/pets/#{@pet.id}"
     else
@@ -69,7 +74,7 @@ class PetsController < ApplicationController
   # DELETE: /pets/5/delete
   delete "/pets/:id" do
     find_and_set_pet
-    if @pet.owner_id == current_user.id
+    if @pet.user_id == current_user.id
       @pet.destroy
       redirect to "/users/#{current_user.id}"
     else

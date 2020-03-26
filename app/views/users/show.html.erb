@@ -16,7 +16,7 @@
 <h3><u>My Pets</u></h3>
 <p>Click you pet's name to view their info.</p>
 <% @pets.each do |pet| %>
-  <% if pet.owner_id == current_user.id %>
+  <% if pet.user_id == current_user.id %>
     <u><strong><a href="/pets/<%= pet.id %>"><%= pet.name %></a></strong></u>
     <br>
   <% end %>
